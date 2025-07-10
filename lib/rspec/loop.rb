@@ -2,6 +2,7 @@
 
 require "rspec/core"
 require_relative "loop/version"
+require_relative "loop/formatter"
 require_relative "core/example"
 
 module RSpec
