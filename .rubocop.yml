@@ -4,6 +4,7 @@ AllCops:
   Exclude:
     - "Appraisals"
     - "gemfiles/**.gemfile"
+    - "vendor/**/*"
 
 # plugins:
 #   - rubocop-performance
