@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.description = "Run RSpec tests multiple times"
   spec.homepage = "https://github.com/kcboschert/rspec-loop"
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 3.0.0"
+  spec.required_ruby_version = ">= 3.2.0"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/kcboschert/rspec-loop"
@@ -31,8 +31,9 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "rspec-core", "~> 3.10"
 
+  spec.add_development_dependency "appraisal"
   spec.add_development_dependency "pry-byebug"
   spec.add_development_dependency "rake", "~> 13.0"
-  spec.add_development_dependency "rspec", "~> 3.0"
+  spec.add_development_dependency "rspec", "~> 3.10.0"
   spec.add_development_dependency "rubocop", "~> 1.21"
 end

@@ -1,5 +1,7 @@
 # rspec-loop
 
+[![Build Status](https://github.com/kcboschert/rspec-loop/actions/workflows/main.yml/badge.svg)](https://github.com/kcboschert/rspec-loop/actions/workflows/main.yml)
+
 rspec-loop adds a `:loop` option to run rspec examples multiple times.
 
 ## Installation

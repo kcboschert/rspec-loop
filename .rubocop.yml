@@ -1,6 +1,9 @@
 AllCops:
-  TargetRubyVersion: 3.0
+  TargetRubyVersion: 3.2
   SuggestExtensions: false
+  Exclude:
+    - "Appraisals"
+    - "gemfiles/**.gemfile"
 
 # plugins:
 #   - rubocop-performance

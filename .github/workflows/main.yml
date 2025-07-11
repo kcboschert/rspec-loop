@@ -1,4 +1,4 @@
-name: Ruby
+name: rspec-loop CI
 
 on:
   push:
@@ -14,14 +14,19 @@ jobs:
     strategy:
       matrix:
         ruby:
-          - '3.3.6'
+          - '3.2'
+          - '3.3'
+          - '3.4'
 
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Ruby
+      - name: Set up Ruby {{ matrix.ruby-version }}
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
-      - name: Run the default task
-        run: bundle exec rake
+      - name: Build & Run Tests
+        run: |
+          bundle install --jobs 4
+          bundle exec appraisal install
+          bundle exec appraisal rake
