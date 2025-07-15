@@ -29,6 +29,25 @@ RSpec.describe RSpec::Loop::Formatter do
     end
   end
 
+  context "summary" do
+    it "reports each failure's result" do
+      RSpec.describe("group") do
+        example("example") do
+          expect(false).to eq(true)
+        end
+      end.run(reporter)
+      formatter.dump_failures(RSpec::Core::Notifications::ExamplesNotification.new(reporter))
+
+      expect(out.string).to match(/Failures:.*1\) group example.*Got 3 failures:/m)
+
+      failure_index1 = out.string.lines.index { |l| l =~ /1\.1\)/ }
+      failure_index2 = out.string.lines.index { |l| l =~ /1\.2\)/ }
+      failure_index3 = out.string.lines.index { |l| l =~ /1\.3\)/ }
+      expect(failure_index2).to be > failure_index1
+      expect(failure_index3).to be > failure_index2
+    end
+  end
+
   (1..3).each do |num_failures|
     context "#{num_failures}/3 failures" do
       it "outputs failure characters for each run that fails" do

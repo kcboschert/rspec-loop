@@ -139,10 +139,14 @@ RSpec.describe RSpec::Loop do
           expect(ex.execution_result.finished_at).to be_a(Time)
           delta_time = ex.execution_result.finished_at - ex.execution_result.started_at
           expect(ex.execution_result.run_time).to eq(delta_time)
-          expect(ex.execution_result.exception).not_to be_nil
+          if num_failures == 1
+            expect(ex.execution_result.exception).to be_a(RuntimeError)
+          else
+            expect(ex.execution_result.exception).to be_a(RSpec::Core::MultipleExceptionError)
+          end
 
-          # always the first exception
-          expect(ex.execution_result.exception.message).to eq("BOOM 1!")
+          expected_message = (1..num_failures).map { |i| "BOOM #{i}!" }.join("\n\n")
+          expect(ex.execution_result.exception.message).to eq(expected_message)
         end
       end
     end

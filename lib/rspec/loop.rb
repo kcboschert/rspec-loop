@@ -54,7 +54,7 @@ module RSpec
         @procsy.reporter.notify(:example_iteration_finished, RSpec::Core::Notifications::ExampleNotification.for(@procsy))
       end
 
-      @procsy.exception = loop_results.map(&:exception).compact.first
+      @procsy.exception = summarize_exceptions(loop_results)
       pending_message = loop_results.map(&:pending_message).compact.first
 
       @procsy.execution_result.status = (@procsy.exception && :failed) || (pending_message && :pending) || :passed
@@ -63,6 +63,15 @@ module RSpec
       @procsy.execution_result.started_at = loop_results.first.started_at
       @procsy.execution_result.finished_at = loop_results.last.finished_at
       @procsy.execution_result.run_time = @procsy.execution_result.finished_at - @procsy.execution_result.started_at
+    end
+
+    private
+
+    def summarize_exceptions(results)
+      exceptions = results.map(&:exception).compact
+      return exceptions&.first if exceptions.count <= 1
+
+      RSpec::Core::MultipleExceptionError.new(*exceptions)
     end
   end
 end
