@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+## [0.2.0] - 2025-07-18
+
 - Display each failure iteration in rspec summary.
 
 ## [0.1.0] - 2025-07-10
