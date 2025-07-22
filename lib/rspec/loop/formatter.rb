@@ -91,7 +91,8 @@ module RSpec
       end
 
       def dump_pending(notification)
-        return if RSpec.configuration.pending_failure_output == :skip
+        return if RSpec.configuration.respond_to?(:pending_failure_output) &&
+                  RSpec.configuration.pending_failure_output == :skip
         return if notification.pending_notifications.empty?
 
         formatted = "\nPending: (Failures listed here are expected and do not affect your suite's status)\n".dup
@@ -99,7 +100,7 @@ module RSpec
         pending_examples.each_with_index do |pending, index|
           formatted << pending.fully_formatted(index.next)
         end
-        puts formatted
+        output.puts formatted
       end
 
       def dump_failures(notification)

@@ -46,6 +46,46 @@ RSpec.describe RSpec::Loop::Formatter do
       expect(failure_index2).to be > failure_index1
       expect(failure_index3).to be > failure_index2
     end
+
+    context "pending_failure_output = default" do
+      it "reports each pending result" do
+        RSpec.describe("group") do
+          example("example") do
+            pending
+            expect(false).to eq(true)
+          end
+        end.run(reporter)
+        formatter.dump_pending(RSpec::Core::Notifications::ExamplesNotification.new(reporter))
+
+        expect(out.string).to match(/Pending: \(Failures listed here are expected.*1\) group example.*Got 3 failures:/m)
+
+        pending_index1 = out.string.lines.index { |l| l =~ /1\.1\)/ }
+        pending_index2 = out.string.lines.index { |l| l =~ /1\.2\)/ }
+        pending_index3 = out.string.lines.index { |l| l =~ /1\.3\)/ }
+        expect(pending_index2).to be > pending_index1
+        expect(pending_index3).to be > pending_index2
+      end
+    end
+
+    if Gem::Version.new(RSpec::Core::Version::STRING) >= Gem::Version.new("3.13")
+      context "pending_failure_output = skip" do
+        before(:each) do
+          allow(RSpec.configuration).to receive(:pending_failure_output).and_return(:skip)
+        end
+
+        it "does not report each pending result" do
+          RSpec.describe("group") do
+            example("example") do
+              pending
+              expect(false).to eq(true)
+            end
+          end.run(reporter)
+          formatter.dump_pending(RSpec::Core::Notifications::ExamplesNotification.new(reporter))
+
+          expect(out.string).not_to match(/Pending: \(Failures listed here are expected.*/)
+        end
+      end
+    end
   end
 
   (1..3).each do |num_failures|
